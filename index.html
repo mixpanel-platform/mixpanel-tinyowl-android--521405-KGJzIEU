@@ -46,7 +46,7 @@
     <script>
         MP.api.ready(function() {
             // DAU
-            MP.api.segment('App Open', null, {
+            MP.api.segment('App Opened', null, {
                 from: moment().subtract(30, 'days'),
                 to: moment(),
                 type: 'unique',
@@ -60,7 +60,7 @@
             });
 
             // MAU
-            MP.api.segment('App Open', null, {
+            MP.api.segment('App Opened', null, {
                 from: moment().subtract(12, 'months'),
                 to: moment(),
                 type: 'unique',
