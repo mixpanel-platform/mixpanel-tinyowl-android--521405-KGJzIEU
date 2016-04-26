@@ -1,15 +1,78 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
+    <style>
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .inline_chart_wrapper {
+            float: left;
+            margin-right: 20px;
+        }
+        .chart {
+            width: 750px;
+        }
+        .clear {
+            clear: both;
+        }
+    </style>
   </head>
   <body class="mixpanel-platform-body">
-    <h1>Hello, World!</h1>
+    <h1>KPI Dashboard</h1>
+        <div class="inline_chart_wrapper">
+            <h3>DAU over the last 30 days</h3>
+            <div id="DAU_graph" class="chart"></div>
+        </div>
+        <div class="inline_chart_wrapper">
+            <h3>MAU over the last 12 months</h3>
+            <div id="MAU_graph" class="chart"></div>
+        </div>
+        <div class="clear"></div>
     <script>
-      // Run queries and display results here
+        MP.api.ready(function() {
+            // DAU
+            MP.api.segment('App Open', null, {
+                from: moment().subtract(30, 'days'),
+                to: moment(),
+                type: 'unique',
+                unit: 'day',
+                cache: '86401:86400'
+            }).done(function(response) {
+                $("#DAU_graph").MPChart({
+                    data: response,
+                    chartType: 'line'
+                });
+            });
+
+            // MAU
+            MP.api.segment('App Open', null, {
+                from: moment().subtract(12, 'months'),
+                to: moment(),
+                type: 'unique',
+                unit: 'month',
+                cache: '86401:86400'
+            }).done(function(response) {
+                $("#MAU_graph").MPChart({
+                    data: response,
+                    chartType: 'line'
+                });
+            });
+        });
     </script>
   </body>
 </html>
